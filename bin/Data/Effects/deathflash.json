@@ -1,0 +1,21 @@
+{
+	"attributes": {
+		"Is Enabled": true,
+		"Name": "",
+		"Tags": [],
+		"Position": "0 -3.94427 7.88854",
+		"Rotation": "1 0 0 0",
+		"Scale": "1 1 1",
+		"Variables": {}
+	},
+	"components": [
+		{
+			"type": "ParticleEmitter",
+			"attributes": {
+				"Effect": "ParticleEffect;Effects/deathflash_particle.xml",
+				"Animation LOD Bias": 0.0,
+				"Autoremove Mode": "Node",
+			}
+		},
+	]
+}
