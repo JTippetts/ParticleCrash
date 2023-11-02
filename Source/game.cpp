@@ -16,7 +16,47 @@
 #include <Urho3D/Resource/JSONFile.h>
 #include <Urho3D/Resource/JSONValue.h>
 
+#include <Urho3D/RmlUI/RmlUI.h>
+#include <Urho3D/RmlUI/RmlUIComponent.h>
+
 #include "game.h"
+
+class TestRmlClick : public RmlUIComponent
+{
+	URHO3D_OBJECT(TestRmlClick, RmlUIComponent);
+	public:
+	TestRmlClick(Context *context) : RmlUIComponent(context)
+	{
+		SetResource("UI/testrmlclick.rml");
+	}
+	
+	protected:
+	
+	void Update(float dt) override;
+	void OnDataModelInitialized() override;
+	
+	void HandleClick(Rml::DataModelHandle modelHandle, Rml::Event& ev, const Rml::VariantList& arguments);
+};
+
+void TestRmlClick::Update(float dt)
+{
+	DirtyAllVariables();
+}
+
+void TestRmlClick::OnDataModelInitialized()
+{
+	Rml::DataModelConstructor* constructor = GetDataModelConstructor();
+	
+	constructor->BindEventCallback("click", &TestRmlClick::HandleClick, this);
+}
+
+void TestRmlClick::HandleClick(Rml::DataModelHandle modelHandle, Rml::Event& ev, const Rml::VariantList& arguments)
+{
+	int button = ev.GetParameter<int>("button", -1);
+	
+	URHO3D_LOGINFO("Button clicked: {}", button);
+}
+
 
 Game::Game(Context *context) : Application(context)
 {
@@ -41,6 +81,7 @@ void Game::Start()
 {
 	SubscribeToEvent("KeyDown", URHO3D_HANDLER(Game, HandleKeyDown));
 	SubscribeToEvent("Update", URHO3D_HANDLER(Game, HandleUpdate));
+	context_->RegisterFactory<TestRmlClick>();
 	
 	SetWindowTitleAndIcon();
 
@@ -58,6 +99,15 @@ void Game::Start()
 
 	auto input = GetSubsystem<Input>();
 	input->SetMouseVisible(true);
+	
+	RmlUI* rmlui = GetSubsystem<RmlUI>();
+	rmlui->LoadFont("Fonts/NotoSans-Condensed.ttf", false);
+	rmlui->LoadFont("Fonts/NotoSans-CondensedBold.ttf", false);
+	rmlui->LoadFont("Fonts/NotoSans-CondensedBoldItalic.ttf", false);
+	rmlui->LoadFont("Fonts/NotoSans-CondensedItalic.ttf", false);
+	
+	scene_->CreateComponent<TestRmlClick>();
+	
 
 }
 

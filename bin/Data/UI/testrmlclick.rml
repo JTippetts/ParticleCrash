@@ -1,0 +1,12 @@
+<rml>
+    <head>
+    <link type="text/rcss" href="default.rcss"/>
+</head>
+
+<body style="width: 550dp; height: 500dp; left: 300px; top: 300px; display: block; ">
+	<div data-model="TestRmlClick" style="border:1px #0ff; background-color: #000;">
+		<button data-event-click="click" >CLICK ME!!</button>
+	</div>
+</body>
+
+</rml>

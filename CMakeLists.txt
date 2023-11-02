@@ -1,14 +1,4 @@
-cmake_minimum_required (VERSION 3.14.5)
-if (COMMAND cmake_policy)
-    cmake_policy (SET CMP0003 NEW)
-    if (CMAKE_VERSION VERSION_GREATER 2.8.12 OR CMAKE_VERSION VERSION_EQUAL 2.8.12)
-        cmake_policy (SET CMP0022 NEW) # INTERFACE_LINK_LIBRARIES defines the link interface
-    endif ()
-    if (CMAKE_VERSION VERSION_GREATER 3.0.0 OR CMAKE_VERSION VERSION_EQUAL 3.0.0)
-        cmake_policy (SET CMP0026 OLD) # Disallow use of the LOCATION target property - therefore we set to OLD as we still need it
-        cmake_policy (SET CMP0042 NEW) # MACOSX_RPATH is enabled by default
-    endif ()
-endif ()
+cmake_minimum_required (VERSION 3.5.0)
 
 set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -16,6 +6,8 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)
 # Set project name
 project (ParticleCrashProject)
 set(TARGET_NAME ParticleCrash)
+
+find_package(Threads)
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -53,9 +45,9 @@ add_executable(${TARGET_NAME} WIN32 ${MY_SOURCE_FILES})
 target_link_libraries(${TARGET_NAME} PRIVATE Urho3D)
 
 if (WEB OR MOBILE)
-	SET(PACKAGE_TOOL ${SDK_PATH}/bin/PackageTool)
+	# SET(PACKAGE_TOOL ${SDK_PATH}/bin/PackageTool)
 	create_pak("${CMAKE_CURRENT_SOURCE_DIR}/bin/Data"               "${CMAKE_BINARY_DIR}/bin/Data.pak")
-    create_pak("${CMAKE_CURRENT_SOURCE_DIR}/bin/CoreData"           "${CMAKE_BINARY_DIR}/bin/CoreData.pak")
+    create_pak("${SDK_PATH}/bin/CoreData"           "${CMAKE_BINARY_DIR}/bin/CoreData.pak")
 endif ()
 
 if (WEB)
